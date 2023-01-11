@@ -22,6 +22,7 @@ import userUpdateByAdminSlice from './reducers/updateUserByAdminReducer';
 import paymentSlice from './reducers/paymentReducer';
 import cartItemsSlice from './reducers/cartReducer';
 
+
 import orderSlice from './reducers/orderReducer';
 import orderDetailsSlice from './reducers/orderDetailsReducer';
 import orderPaySlice from './reducers/orderPayReducer';
@@ -43,6 +44,7 @@ const store = configureStore({
 
 		cart: cartItemsSlice.reducer,
 		payment: paymentSlice.reducer,
+
 
 		order: orderSlice.reducer,
 		orderDetails: orderDetailsSlice.reducer,

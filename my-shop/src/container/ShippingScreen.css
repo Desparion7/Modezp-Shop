@@ -23,9 +23,15 @@
 .address-form input {
 	padding: 0.3rem;
 	margin-bottom: 0.3rem;
+	font-size: 1rem;
 }
 .address-form label {
 	margin-bottom: 0.5rem;
+}
+.address-form select {
+	padding: 0.3rem;
+	margin-bottom: 0.5rem;
+	font-size: 1rem;
 }
 
 @media screen and (max-width: 900px) {

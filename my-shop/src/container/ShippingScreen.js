@@ -14,6 +14,8 @@ const ShippingScreen = () => {
 	const [postalCode, setPostalCode] = useState('');
 	const [city, setCity] = useState('');
 	const [phone, setPhone] = useState('');
+	const [delivery, setDelivery] = useState('Poczta list polecony 0 zł');
+	const [deliveryPrice, setDeliveryPrice] = useState(0);
 
 	const userInfo = useSelector((state) => state.userLogin);
 	const { userDetailsInfo } = userInfo;
@@ -25,12 +27,15 @@ const ShippingScreen = () => {
 	const fullPrice = cartItems
 		.reduce((acc, item) => acc + item.qty * item.price, 0)
 		.toFixed(2);
-
+	const FullPriceWithDelivery = (+fullPrice + deliveryPrice).toFixed(2);
 	useEffect(() => {
 		if (!userDetailsInfo) {
 			navigate('/login');
 		}
-		if (!userDetailsInformation._id ||userDetailsInformation._id !==userDetailsInfo._id) {
+		if (
+			!userDetailsInformation._id ||
+			userDetailsInformation._id !== userDetailsInfo._id
+		) {
 			dispatch(getUserDetails('profile'));
 		}
 		if (userDetailsInformation.addressName) {
@@ -44,6 +49,25 @@ const ShippingScreen = () => {
 	}, [dispatch, navigate, userDetailsInfo, userDetailsInformation]);
 
 	useEffect(() => {}, [dispatch]);
+
+	const deliverHandler = (e) => {
+		if (e.target.value === 'Poczta list polecony 0 zł') {
+			setDelivery(e.target.value);
+			setDeliveryPrice(0);
+		}
+		if (e.target.value === 'Poczta paczka 12,99 zł') {
+			setDelivery(e.target.value);
+			setDeliveryPrice(12.99);
+		}
+		if (e.target.value === 'Kurier DPD 14,99 zł') {
+			setDelivery(e.target.value);
+			setDeliveryPrice(14.99);
+		}
+		if (e.target.value === 'Kurier Inpost 14,99 zł') {
+			setDelivery(e.target.value);
+			setDeliveryPrice(14.99);
+		}
+	};
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -117,6 +141,24 @@ const ShippingScreen = () => {
 							required
 							onChange={(e) => setPhone(e.target.value)}
 						></input>
+						<label>Forma dostawy:</label>
+						<select
+							onChange={(e) => {
+								deliverHandler(e);
+							}}
+							defaultValue='Poczta list polecony 0 zł'
+						>
+							<option value='Poczta list polecony 0 zł'>
+								Poczta Polska list polecony 0 zł
+							</option>
+							<option value='Poczta paczka 12,99 zł'>
+								Poczta Polska paczka 12,99 zł
+							</option>
+							<option value='Kurier DPD 14,99 zł'>Kurier DPD 14,99 zł</option>
+							<option value='Kurier Inpost 14,99 zł'>
+								Kurier Inpost 14,99 zł
+							</option>
+						</select>
 					</form>
 				</div>
 				<div className='summary-box'>
@@ -129,9 +171,10 @@ const ShippingScreen = () => {
 			<div className='second-summary-box'>
 				<div className='box-shadow'>
 					<div>Wartość produktów: {fullPrice} zł</div>
-					<div>Dostawa od: 0,00 zł</div>
+					<div>Dostawa: {delivery}</div>
 					<div>
-						Razem z dostawą: <span className='full-price'> {fullPrice}</span> zł
+						Razem z dostawą:{' '}
+						<span className='full-price'> {FullPriceWithDelivery}</span> zł
 					</div>
 					<button
 						type='submit'
